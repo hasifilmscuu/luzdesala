@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0.00 0.00 30.00 112.00" width="30" height="112"><title>Luz de Sala</title><defs><linearGradient id="lds-glow" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#E8B566" stop-opacity=".95"/><stop offset="1" stop-color="#E8B566" stop-opacity="0"/></linearGradient></defs>
+<rect x="16" y="0" width="2" height="112" fill="#F1EBE0" fill-opacity=".3"/>
+<rect x="13" y="0" width="8" height="92" fill="url(#lds-glow)" fill-opacity=".45"/>
+<line x1="0" y1="4" x2="8" y2="4" stroke="#F1EBE0" stroke-opacity=".45" stroke-width="1.4"/>
+<line x1="0" y1="26" x2="8" y2="26" stroke="#F1EBE0" stroke-opacity=".45" stroke-width="1.4"/>
+<line x1="0" y1="48" x2="8" y2="48" stroke="#F1EBE0" stroke-opacity=".45" stroke-width="1.4"/>
+<line x1="0" y1="70" x2="8" y2="70" stroke="#F1EBE0" stroke-opacity=".45" stroke-width="1.4"/>
+<line x1="0" y1="92" x2="8" y2="92" stroke="#F1EBE0" stroke-opacity=".45" stroke-width="1.4"/>
+<rect x="4" y="86" width="26" height="14" rx="2" fill="#E8B566"/>
+<line x1="8" y1="93" x2="26" y2="93" stroke="#141116" stroke-width="1.4"/></svg>

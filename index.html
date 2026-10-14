@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Luz de Sala — Conciertos y espectáculos</title>
+<meta name="description" content="Luz de Sala trae conciertos y espectáculos a Chihuahua. Próximo evento: Incorregibles, con El Costeño y El Norteño.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0B0A0D">
+<meta property="og:title" content="Luz de Sala — Conciertos y espectáculos">
+<meta property="og:description" content="Cuando la sala se apaga, empieza lo importante. Próximo evento: Incorregibles.">
+<meta property="og:image" content="assets/hero-poster.jpg">
+<link rel="icon" href="assets/logo-icono.svg" type="image/svg+xml">
+<style>
+@font-face{font-family:"Bodoni Moda";src:url(assets/BodoniModa-Regular.ttf);font-weight:400;font-display:swap}
+@font-face{font-family:"Bodoni Moda";src:url(assets/BodoniModa-Medium.ttf);font-weight:500;font-display:swap}
+@font-face{font-family:"Inter";src:url(assets/Inter-Regular.ttf);font-weight:400;font-display:swap}
+@font-face{font-family:"Inter";src:url(assets/Inter-Medium.ttf);font-weight:500;font-display:swap}
+@font-face{font-family:"Inter";src:url(assets/Inter-SemiBold.ttf);font-weight:600;font-display:swap}
+@font-face{font-family:"Space Mono";src:url(assets/SpaceMono-Regular.ttf);font-weight:400;font-display:swap}
+
+:root{
+  --bg:#0B0A0D; --bg2:#141116; --ink:#F1EBE0; --mute:#A59E92; --line:rgba(241,235,224,.14);
+  --amber:#E8B566; --amber-d:#C9954A; --wa:#25D366;
+  --serif:"Bodoni Moda",Georgia,serif; --sans:"Inter",system-ui,sans-serif; --mono:"Space Mono",ui-monospace,monospace;
+  --gut:clamp(20px,5vw,72px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,video{display:block;max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--amber);color:#111}
+
+/* ---------- 3D: reflectores (canvas fijo, detrás del contenido) ---------- */
+#rig{position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;opacity:0;transition:opacity .4s}
+main,footer{position:relative;z-index:2}
+
+/* ---------- Header: el logo siempre presente ---------- */
+header.bar{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:14px var(--gut);transition:background .4s,backdrop-filter .4s,border-color .4s;border-bottom:1px solid transparent}
+header.bar.solid{background:rgba(11,10,13,.72);backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);border-color:var(--line)}
+.brand img{height:44px;width:auto}
+nav.links{display:flex;gap:30px;font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase}
+nav.links a{position:relative;color:var(--mute);transition:color .25s}
+nav.links a:hover,nav.links a.on{color:var(--ink)}
+nav.links a::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:1px;background:var(--amber);transform:scaleX(0);transform-origin:left;transition:transform .35s}
+nav.links a.on::after,nav.links a:hover::after{transform:scaleX(1)}
+
+/* ---------- Botones ---------- */
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 26px;border-radius:999px;font-weight:600;font-size:15px;letter-spacing:.01em;
+  border:1px solid var(--amber);color:var(--amber);transition:background .3s,color .3s,transform .3s,box-shadow .3s;cursor:pointer;background:transparent}
+.btn:hover{background:var(--amber);color:#14110c;box-shadow:0 0 40px rgba(232,181,102,.35);transform:translateY(-2px)}
+.btn.solid{background:var(--amber);color:#14110c}
+.btn.solid:hover{background:#f3c581}
+.btn.wa{border-color:rgba(37,211,102,.55);color:#bff3d2}
+.btn.solid.wa{background:var(--amber);color:#14110c;border-color:var(--amber)}
+.btn.solid.wa:hover{background:#f3c581;color:#14110c;box-shadow:0 0 40px rgba(232,181,102,.4)}
+.btn.wa:hover{background:var(--wa);color:#04210f;box-shadow:0 0 40px rgba(37,211,102,.35)}
+.btn svg{width:18px;height:18px;flex:none}
+.btn.sm{padding:10px 18px;font-size:13px}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;height:100svh;min-height:620px;display:flex;align-items:flex-end;overflow:hidden;isolation:isolate}
+.hero video,.hero .poster{position:absolute;inset:0;width:100%;height:100%!important;object-fit:cover;z-index:-2}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(90deg,rgba(11,10,13,.78) 0%,rgba(11,10,13,.35) 45%,rgba(11,10,13,0) 70%),linear-gradient(180deg,rgba(11,10,13,.7) 0%,rgba(11,10,13,0) 22%,rgba(11,10,13,0) 50%,rgba(11,10,13,.9) 90%,var(--bg) 100%)}
+.hero-in{width:100%;padding:0 var(--gut) clamp(44px,8vh,92px);display:grid;gap:26px;max-width:1500px;margin:0 auto}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--amber);display:flex;align-items:center;gap:14px}
+.eyebrow::before{content:"";width:34px;height:1px;background:var(--amber)}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(40px,6.2vw,96px);line-height:1.02;letter-spacing:-.015em;max-width:14ch;text-shadow:0 2px 30px rgba(0,0,0,.45)}
+h1 em{font-style:italic;color:var(--amber)}
+.hero p.lead{max-width:46ch;color:#d8d1c4;font-size:clamp(16px,1.5vw,20px)}
+.cta-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.hero-in{transition:opacity .9s,transform .9s}.hero-in.off{opacity:0!important;transform:translateY(14px);pointer-events:none}
+.scroll-cue{position:absolute;right:var(--gut);bottom:34px;font-family:var(--mono);font-size:11px;letter-spacing:.3em;writing-mode:vertical-rl;color:var(--mute);display:flex;align-items:center;gap:14px}
+.scroll-cue::after{content:"";width:1px;height:56px;background:linear-gradient(var(--amber),transparent);animation:cue 2.2s ease-in-out infinite}
+@keyframes cue{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ---------- Secciones ---------- */
+section{padding:clamp(70px,9vw,130px) var(--gut);position:relative}
+.wrap{max-width:1360px;margin:0 auto}
+.sec-label{font-family:var(--mono);font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--amber);margin-bottom:22px;display:flex;gap:14px;align-items:center}
+.sec-label b{font-weight:400;color:var(--mute)}
+h2{font-family:var(--serif);font-weight:400;font-size:clamp(34px,5vw,72px);line-height:1.05;letter-spacing:-.01em}
+h2 em{font-style:italic;color:var(--amber)}
+
+/* marquesina */
+.marquee{overflow:hidden;border-block:1px solid var(--line);padding:16px 0;background:rgba(11,10,13,.8);position:relative;z-index:2}
+.marquee div{display:flex;gap:48px;width:max-content;animation:mq 38s linear infinite;font-family:var(--mono);font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--mute)}
+.marquee span::after{content:"•";margin-left:48px;color:var(--amber)}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* ---------- Evento ---------- */
+#evento{background:radial-gradient(1200px 600px at 78% 30%,rgba(232,181,102,.10),transparent 60%)}
+.ev{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(28px,5vw,80px);align-items:center;margin-top:46px}
+.ev-card{position:relative;border-radius:6px;overflow:hidden;border:1px solid var(--line);background:#000;--mx:50%;--my:50%;aspect-ratio:1200/1152}
+.ev-card img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.ev-card:hover img{transform:scale(1.04)}
+.ev-card::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(420px circle at var(--mx) var(--my),rgba(255,236,190,.22),transparent 60%);mix-blend-mode:soft-light}
+.ev-card::before{content:"";position:absolute;inset:auto 0 0 0;height:30%;z-index:1;background:linear-gradient(transparent,#000);pointer-events:none}
+.ev-badge{position:absolute;left:18px;top:18px;z-index:2;background:rgba(11,10,13,.82);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--amber)}
+.ev-info .tit{width:min(100%,640px);height:auto;margin:-6% 0 0 -2%;filter:drop-shadow(0 18px 40px rgba(0,0,0,.6))}
+.ev-info .who{font-family:var(--serif);font-size:clamp(22px,2.4vw,32px);line-height:1.25;margin:10px 0 28px}
+.ev-info .who span{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.24em;color:var(--mute);text-transform:uppercase;margin-top:8px}
+.ev-data{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:30px}
+.ev-data div{padding:18px 16px 18px 0}
+.ev-data div+div{padding-left:18px;border-left:1px solid var(--line)}
+.ev-data small{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--mute);margin-bottom:8px}
+.ev-data strong{font-family:var(--serif);font-weight:500;font-size:clamp(20px,2vw,28px);line-height:1.15;color:var(--ink)}
+.ev-data .tbd{color:var(--amber);font-size:clamp(17px,1.5vw,21px);line-height:1.3;padding-top:4px}
+.ev-note{margin-top:18px;font-size:13px;color:var(--mute)}
+
+/* ---------- Nosotros ---------- */
+.nos{display:grid;grid-template-columns:1.4fr 1fr;gap:clamp(30px,6vw,100px);align-items:end}
+.nos h2{font-size:clamp(40px,6.2vw,96px)}
+.nos .facts{display:grid;gap:0;border-top:1px solid var(--line)}
+.nos .facts div{padding:22px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:baseline}
+.nos .facts i{font-style:normal;font-family:var(--mono);font-size:12px;color:var(--amber);letter-spacing:.14em}
+.nos .facts p{color:#d6cfc2}
+.nos .facts b{display:block;font-family:var(--serif);font-weight:500;font-size:22px;color:var(--ink);margin-bottom:2px}
+.nos-cta{margin-top:46px}
+
+/* ---------- Galería ---------- */
+.gal{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:clamp(90px,11vw,170px);gap:14px;margin-top:46px}
+.gal figure{position:relative;overflow:hidden;border-radius:4px;border:1px solid var(--line);background:#000}
+.gal img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s cubic-bezier(.2,.7,.2,1),filter .6s;filter:saturate(.95) brightness(.92)}
+.gal figure:hover img{transform:scale(1.06);filter:saturate(1.1) brightness(1.05)}
+.g1{grid-column:1/8;grid-row:1/4}
+.g2{grid-column:8/13;grid-row:1/3}
+.g3{grid-column:8/13;grid-row:3/5}
+.g4{grid-column:1/8;grid-row:4/5;display:flex;align-items:center;padding:0 clamp(20px,3vw,40px);background:var(--bg2)!important}
+.g4 p{font-family:var(--serif);font-size:clamp(20px,2.4vw,34px);line-height:1.2}
+.g4 p em{color:var(--amber)}
+.gal-cta{margin-top:38px}
+
+/* ---------- Contacto ---------- */
+#contacto{background:linear-gradient(180deg,transparent,rgba(232,181,102,.07) 70%,transparent);text-align:center}
+#contacto .wrap{display:grid;justify-items:center;gap:26px}
+#contacto h2{font-size:clamp(44px,8vw,130px);max-width:12ch}
+.chips{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.chip{border:1px solid var(--line);border-radius:999px;padding:12px 20px;font-size:14px;color:#d6cfc2;transition:border-color .3s,color .3s,background .3s}
+.chip:hover{border-color:var(--amber);color:var(--amber);background:rgba(232,181,102,.06)}
+.big-wa{font-size:clamp(18px,2.4vw,26px);padding:20px 40px}
+.mail{font-family:var(--mono);font-size:14px;letter-spacing:.08em;color:var(--mute)}
+.mail a{color:var(--ink);border-bottom:1px solid var(--amber);padding-bottom:2px}
+.social{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.soc{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:999px;padding:10px 18px;font-size:14px;color:#d6cfc2;transition:border-color .3s,color .3s,background .3s}
+.soc svg{width:18px;height:18px}
+.soc-f{display:flex;gap:8px}.soc-f .soc{padding:9px}
+.soc:hover{border-color:var(--amber);color:var(--amber);background:rgba(232,181,102,.06)}
+.tel{font-family:var(--mono);font-size:13px;letter-spacing:.16em;color:var(--mute)}
+
+footer{border-top:1px solid var(--line);padding:42px var(--gut) 120px;display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between;background:var(--bg);color:var(--mute);font-size:13px}
+footer img{height:38px}
+
+/* ---------- WhatsApp flotante ---------- */
+.fab{position:fixed;right:22px;bottom:calc(22px + env(safe-area-inset-bottom));z-index:60;display:flex;align-items:center;gap:10px;
+  background:var(--wa);color:#04210f;font-weight:600;font-size:14px;padding:14px 20px 14px 16px;border-radius:999px;box-shadow:0 10px 36px rgba(0,0,0,.5),0 0 0 0 rgba(37,211,102,.5);animation:pulse 3s infinite}
+.fab svg{width:22px;height:22px}
+@keyframes pulse{0%,70%,100%{box-shadow:0 10px 36px rgba(0,0,0,.5),0 0 0 0 rgba(37,211,102,.45)}85%{box-shadow:0 10px 36px rgba(0,0,0,.5),0 0 0 16px rgba(37,211,102,0)}}
+
+/* ---------- Revelado ---------- */
+.rv{opacity:0;transform:translateY(28px);transition:opacity 1s cubic-bezier(.2,.7,.2,1),transform 1s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.12s}.rv.d2{transition-delay:.24s}.rv.d3{transition-delay:.36s}
+
+/* ---------- Móvil ---------- */
+@media (max-width:900px){
+  nav.links{display:none}
+  .brand img{height:38px}
+  .ev,.nos{grid-template-columns:1fr}
+  .ev-card{aspect-ratio:1/1.05}
+  .ev-data strong{font-size:19px}
+  .gal{grid-auto-rows:clamp(70px,22vw,130px);gap:10px}
+  .g1{grid-column:1/13;grid-row:1/4}.g2{grid-column:1/7;grid-row:4/6}.g3{grid-column:7/13;grid-row:4/6}.g4{grid-column:1/13;grid-row:6/8;padding:20px}
+  .scroll-cue{display:none}
+  .hero-in{padding-bottom:90px}
+  .fab span{display:none}.fab{padding:15px}
+  header.bar .btn{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}.rv{opacity:1;transform:none;transition:none}.marquee div,.fab,.scroll-cue::after{animation:none}
+}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Event","name":"Incorregibles — El Costeño y El Norteño","description":"El show más salvaje está de regreso. Comedia en vivo con Javier Carranza «El Costeño» y Edson Zúñiga «El Norteño».","startDate":"2026-11-25T20:00:00-06:00","eventStatus":"https://schema.org/EventScheduled","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Arena Córner","address":{"@type":"PostalAddress","addressLocality":"Chihuahua","addressRegion":"Chihuahua","addressCountry":"MX"}},"image":["assets/incorregibles-artistas.jpg"],"performer":[{"@type":"Person","name":"Javier Carranza «El Costeño»"},{"@type":"Person","name":"Edson Zúñiga «El Norteño»"}],"organizer":{"@type":"Organization","name":"Luz de Sala","email":"contacto.luzdesala@gmail.com","sameAs":["https://www.instagram.com/luzdesala.mx","https://www.facebook.com/profile.php?id=61595263474828"]}}
+</script>
+</head>
+<body>
+
+<canvas id="rig" aria-hidden="true"></canvas>
+
+<header class="bar" id="bar">
+  <a class="brand" href="#inicio" aria-label="Luz de Sala, inicio"><img src="assets/logo-horizontal.svg" alt="Luz de Sala — Conciertos · Espectáculos"></a>
+  <nav class="links" aria-label="Principal">
+    <a href="#evento">Evento</a><a href="#nosotros">Nosotros</a><a href="#galeria">Galería</a><a href="#contacto">Contacto</a>
+  </nav>
+  <a class="btn wa sm" data-wa="Hola, vi la página de Luz de Sala y quiero más información." href="#">
+    <svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-wa"/></svg>WhatsApp
+  </a>
+</header>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-ig" viewBox="0 0 24 24"><path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm0 1.8A3.7 3.7 0 0 0 3.8 7.5v9a3.7 3.7 0 0 0 3.7 3.7h9a3.7 3.7 0 0 0 3.7-3.7v-9a3.7 3.7 0 0 0-3.7-3.7h-9ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.8a3.2 3.2 0 1 0 0 6.4 3.2 3.2 0 0 0 0-6.4Zm5.2-2.6a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4Z"/></symbol><symbol id="i-fb" viewBox="0 0 24 24"><path d="M13.5 22v-8.2h2.8l.5-3.3h-3.3V8.4c0-.9.4-1.7 1.8-1.7H17V3.9S15.8 3.7 14.7 3.7c-2.4 0-3.9 1.4-3.9 3.9v2.9H8v3.3h2.8V22h2.7Z"/></symbol><symbol id="i-wa" viewBox="0 0 24 24"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 14.95L2 22l5.2-1.5A9.9 9.9 0 1 0 12.04 2Zm0 18.1a8.2 8.2 0 0 1-4.2-1.15l-.3-.18-3.08.88.9-3-.2-.31A8.2 8.2 0 1 1 12.04 20.1Zm4.5-6.14c-.25-.12-1.46-.72-1.69-.8-.23-.09-.39-.12-.56.12-.16.25-.64.8-.78.96-.14.17-.29.19-.54.06a6.7 6.7 0 0 1-3.34-2.92c-.25-.43.25-.4.72-1.34.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.41-.56-.42h-.47c-.17 0-.43.06-.66.31-.23.25-.87.85-.87 2.07 0 1.22.89 2.4 1.01 2.57.12.17 1.75 2.67 4.23 3.74 1.57.68 2.19.74 2.98.62.48-.07 1.46-.6 1.67-1.17.2-.58.2-1.07.14-1.17-.06-.1-.23-.17-.48-.29Z"/></symbol></svg>
+
+<main>
+  <!-- 1 · HERO -->
+  <section class="hero" id="inicio" style="padding:0">
+    <img class="poster" src="assets/hero-poster.jpg" alt="">
+    <video id="heroVid" autoplay muted loop playsinline preload="auto" poster="assets/hero-poster.jpg">
+      <source src="assets/hero-720.mp4" media="(max-width:900px)" type="video/mp4">
+      <source src="assets/hero-1080.mp4" type="video/mp4">
+    </video>
+    <div class="hero-in">
+      <div class="eyebrow rv">Conciertos · Espectáculos · Chihuahua</div>
+      <h1 class="rv d1">Cuando la sala se apaga, <em>empieza lo importante.</em></h1>
+      <p class="lead rv d2">Traemos a Chihuahua las noches que valen la pena: escenarios íntimos, buen sonido y la emoción de ese segundo antes del primer acorde.</p>
+      <div class="cta-row rv d3">
+        <a class="btn solid" href="#evento">Ver próximo evento</a>
+        <a class="btn wa" data-wa="Hola, quiero información de los próximos eventos de Luz de Sala." href="#"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-wa"/></svg>Escríbenos por WhatsApp</a>
+      </div>
+    </div>
+    <div class="scroll-cue">DESLIZA</div>
+  </section>
+
+  <div class="marquee" aria-hidden="true"><div>
+    <span>Chihuahua</span><span>Conciertos</span><span>Espectáculos</span><span>Muy pronto más ciudades</span><span>Luz de Sala</span>
+    <span>Chihuahua</span><span>Conciertos</span><span>Espectáculos</span><span>Muy pronto más ciudades</span><span>Luz de Sala</span>
+  </div></div>
+
+  <!-- 2 · PRÓXIMO EVENTO -->
+  <section id="evento">
+    <div class="wrap">
+      <div class="sec-label rv">01 <b>/</b> Próximo evento</div>
+      <h2 class="rv d1">El show más salvaje <em>está de regreso.</em></h2>
+      <div class="ev">
+        <div class="ev-card rv" id="evCard">
+          <span class="ev-badge">Comedia · En vivo</span>
+          <img src="assets/incorregibles-artistas.jpg" alt="El Costeño y El Norteño, protagonistas de Incorregibles" width="1200" height="1152">
+        </div>
+        <div class="ev-info rv d1">
+          <img class="tit" src="assets/incorregibles-logo.png" alt="Incorregibles" width="2180" height="500">
+          <p class="who">El Costeño × El Norteño<span>Javier Carranza · Edson Zúñiga</span></p>
+          <!-- ▼▼ DATOS DEL EVENTO: cambiar cuando se confirmen (también en CONFIG del script al final) ▼▼ -->
+          <div class="ev-data">
+            <div><small>Fecha</small><strong data-k="fecha">MIÉ 25 NOV</strong></div>
+            <div><small>Sede</small><strong data-k="sede">Arena Córner</strong></div>
+            <div><small>Hora</small><strong data-k="hora">20:00 H</strong></div>
+          </div>
+          <!-- ▲▲ -->
+          <div class="cta-row">
+            <a class="btn solid wa-ev" data-wa="Hola, quiero mis boletos para INCORREGIBLES (El Costeño y El Norteño), miércoles 25 de noviembre, Arena Córner. ¿Me avisan cuando salgan a la venta?" href="#"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-wa"/></svg>Quiero mis boletos</a>
+            <a class="btn" data-wa="Hola, quiero informes de precios y zonas para INCORREGIBLES, miércoles 25 de noviembre en Arena Córner." href="#">Preguntar por precios</a>
+          </div>
+          <p class="ev-note"><b id="cd" style="color:var(--amber);font-weight:500"></b> Boletos en Don Boletón: <em>próximamente</em>. Cupo limitado.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · NOSOTROS -->
+  <section id="nosotros">
+    <div class="wrap nos">
+      <div>
+        <div class="sec-label rv">02 <b>/</b> Nosotros</div>
+        <h2 class="rv d1">Apagamos la luz para que <em>lo importante</em> empiece.</h2>
+        <div class="nos-cta rv d2"><a class="btn wa" data-wa="Hola, me gustaría conocer más de Luz de Sala." href="#"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-wa"/></svg>Conversemos</a></div>
+      </div>
+      <div class="facts rv d2">
+        <div><i>01</i><p><b>Conciertos y espectáculos</b>Pop, rock, comedia y todo lo que merece una sala llena.</p></div>
+        <div><i>02</i><p><b>Salas a medida</b>Formatos íntimos, buen sonido y una experiencia cuidada de la puerta al final del show.</p></div>
+        <div><i>03</i><p><b>Hoy Chihuahua, mañana México</b>Empezamos aquí. La ambición es llevar la misma noche a todo el país.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · GALERÍA -->
+  <section id="galeria">
+    <div class="wrap">
+      <div class="sec-label rv">03 <b>/</b> Galería</div>
+      <h2 class="rv d1">La sala, <em>antes del primer acorde.</em></h2>
+      <div class="gal">
+        <figure class="g1 rv"><img src="assets/escena-1.jpg" alt="Escenario con reflectores y público" loading="lazy"></figure>
+        <figure class="g2 rv d1"><img src="assets/escena-2.jpg" alt="Sala a oscuras con haces azules" loading="lazy"></figure>
+        <figure class="g3 rv d2"><img src="assets/escena-3.jpg" alt="Artista iluminada y manos arriba" loading="lazy"></figure>
+        <figure class="g4 rv"><p>Cada evento deja su <em>propia luz.</em></p></figure>
+      </div>
+      <div class="gal-cta rv"><a class="btn wa" data-wa="Hola, quiero llevar un evento con Luz de Sala." href="#"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-wa"/></svg>Quiero un evento así</a></div>
+    </div>
+  </section>
+
+  <!-- 5 · CONTACTO -->
+  <section id="contacto">
+    <div class="wrap">
+      <div class="sec-label rv" style="justify-content:center">04 <b>/</b> Contacto</div>
+      <h2 class="rv d1">Hablemos de <em>tu próxima noche.</em></h2>
+      <div class="chips rv d2">
+        <a class="chip" data-wa="Hola, quiero boletos para el próximo evento de Luz de Sala." href="#">Boletos</a>
+        <a class="chip" data-wa="Hola, quiero llevar un evento / concierto con Luz de Sala." href="#">Quiero un evento</a>
+        <a class="chip" data-wa="Hola, me interesa patrocinar o colaborar con Luz de Sala." href="#">Patrocinio</a>
+        <a class="chip" data-wa="Hola, soy artista / representante y quiero presentarme con Luz de Sala." href="#">Soy artista</a>
+      </div>
+      <a class="btn solid wa big-wa rv d3" data-wa="Hola, vi la página de Luz de Sala y quiero hablar con ustedes." href="#"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-wa"/></svg>Escríbenos por WhatsApp</a>
+      <p class="tel rv">WhatsApp · <span id="telTxt">614 161 6367</span></p>
+      <div class="social rv">
+        <a class="soc" href="https://www.instagram.com/luzdesala.mx" target="_blank" rel="noopener" aria-label="Instagram @luzdesala.mx"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-ig"/></svg>@luzdesala.mx</a>
+        <a class="soc" href="https://www.facebook.com/profile.php?id=61595263474828" target="_blank" rel="noopener" aria-label="Facebook Luz de Sala"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-fb"/></svg>Facebook</a>
+      </div>
+      <p class="tel rv" style="font-size:12px;letter-spacing:.04em;max-width:46ch">Al escribirnos usamos tus datos solo para responderte. Consulta el <a href="privacidad.html" style="color:var(--amber)">aviso de privacidad</a>.</p>
+      <p class="mail rv">o por correo: <a href="mailto:contacto.luzdesala@gmail.com">contacto.luzdesala@gmail.com</a></p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <img src="assets/logo-horizontal.svg" alt="Luz de Sala">
+  <span class="soc-f"><a class="soc" href="https://www.instagram.com/luzdesala.mx" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-ig"/></svg></a> <a class="soc" href="https://www.facebook.com/profile.php?id=61595263474828" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-fb"/></svg></a></span>
+  <span>© 2026 Luz de Sala · Chihuahua, México · <a href="privacidad.html" style="border-bottom:1px solid var(--line)">Aviso de privacidad</a> · <a href="mailto:contacto.luzdesala@gmail.com" style="border-bottom:1px solid var(--line)">contacto.luzdesala@gmail.com</a></span>
+</footer>
+
+<a class="fab" data-wa="Hola, vi la página de Luz de Sala y quiero más información." href="#" aria-label="Escríbenos por WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-wa"/></svg><span>WhatsApp</span></a>
+
+<script src="assets/three.min.js"></script>
+<script>
+/* ====== CONFIG (cambiar aquí al confirmar) ====== */
+const CONFIG = {
+  whatsapp: "526141616367",           // PRUEBA. Cambiar por el número definitivo del cliente
+  evento: { fecha: "MIÉ 25 NOV", sede: "Arena Córner", hora: "20:00 H" },
+  inicio: "2026-11-25T20:00:00-06:00"   // hora de Chihuahua (UTC-6)
+};
+/* ================================================ */
+
+// WhatsApp en todos los botones
+document.querySelectorAll("[data-wa]").forEach(a=>{
+  a.href = "https://wa.me/"+CONFIG.whatsapp+"?text="+encodeURIComponent(a.dataset.wa);
+  a.target = "_blank"; a.rel = "noopener";
+});
+// Datos del evento
+Object.entries(CONFIG.evento).forEach(([k,v])=>{
+  const el=document.querySelector('[data-k="'+k+'"]'); if(el&&v){el.textContent=v; el.classList.remove("tbd");}
+});
+
+// Cuenta regresiva
+(function(){const el=document.getElementById("cd");if(!el)return;const d=Math.ceil((new Date(CONFIG.inicio)-Date.now())/864e5);
+  el.textContent=d>1?"Faltan "+d+" días.":d===1?"Es mañana.":d===0?"Es hoy.":"";})();
+// Header sólido + sección activa
+const bar=document.getElementById("bar");
+const secs=[...document.querySelectorAll("main section[id]")];
+const links=[...document.querySelectorAll("nav.links a")];
+function onScroll(){
+  bar.classList.toggle("solid", scrollY>40);
+  let cur="";secs.forEach(s=>{if(s.getBoundingClientRect().top<innerHeight*.4)cur=s.id});
+  links.forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+cur));
+}
+addEventListener("scroll",onScroll,{passive:true});onScroll();
+
+// Revelado
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.14,rootMargin:"0px 0px -6% 0px"});
+document.querySelectorAll(".rv").forEach(el=>io.observe(el));
+// Hero: revelar de inmediato
+setTimeout(()=>document.querySelectorAll(".hero .rv").forEach(e=>e.classList.add("in")),150);
+
+// Luz que sigue al cursor en la tarjeta del evento
+const card=document.getElementById("evCard");
+card.addEventListener("pointermove",e=>{const r=card.getBoundingClientRect();card.style.setProperty("--mx",(e.clientX-r.left)+"px");card.style.setProperty("--my",(e.clientY-r.top)+"px")});
+
+// Si el video no arranca (ahorro de batería), queda el póster
+const v=document.getElementById("heroVid");v.play&&v.play().catch(()=>{});
+// El texto se retira cuando el video llega al destello y al logo, y regresa al reiniciar el loop
+const heroIn=document.querySelector(".hero-in");
+v.addEventListener("timeupdate",()=>heroIn.classList.toggle("off",v.currentTime>8.6));
+
+/* ====== 3D: tres reflectores con haz volumétrico ======
+   Aparecen cuando el hero termina ("la luz vuelve") y barren la página con el scroll. */
+(function(){
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const canvas=document.getElementById("rig");
+  let renderer;
+  try{renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true,powerPreference:"low-power"})}catch(e){return}
+  const mobile=innerWidth<900;
+  renderer.setPixelRatio(Math.min(devicePixelRatio,mobile?1.5:2));
+  renderer.setClearColor(0x000000,0);
+  const scene=new THREE.Scene();
+  const cam=new THREE.PerspectiveCamera(40,1,.1,100);cam.position.set(0,0,14);
+  scene.add(new THREE.AmbientLight(0x6a5a48,.6));
+  const key=new THREE.DirectionalLight(0xffe2b0,1.1);key.position.set(3,6,8);scene.add(key);
+  const rim=new THREE.PointLight(0xe8b566,2,30);rim.position.set(0,-2,6);scene.add(rim);
+
+  // haz de luz (cono con degradado y borde suave)
+  const beamMat=()=>new THREE.ShaderMaterial({
+    transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide,
+    uniforms:{uI:{value:0},uC:{value:new THREE.Color(0xffd79a)}},
+    vertexShader:"varying float vH;varying vec3 vN;varying vec3 vV;void main(){vH=uv.y;vec4 mv=modelViewMatrix*vec4(position,1.);vN=normalize(normalMatrix*normal);vV=normalize(-mv.xyz);gl_Position=projectionMatrix*mv;}",
+    fragmentShader:"uniform float uI;uniform vec3 uC;varying float vH;varying vec3 vN;varying vec3 vV;void main(){float f=pow(abs(dot(normalize(vN),normalize(vV))),1.6);float len=pow(clamp(vH,0.,1.),.85);float a=f*len*uI*.72;gl_FragColor=vec4(uC*a,a);}"
+  });
+
+  const metal=new THREE.MeshStandardMaterial({color:0x1b1a1e,metalness:.85,roughness:.38});
+  const trim =new THREE.MeshStandardMaterial({color:0x34312f,metalness:.9,roughness:.28});
+  const lens =new THREE.MeshBasicMaterial({color:0xf2cf93});
+  const fixtures=[];
+  const N=mobile?2:3, xs=mobile?[-2.6,2.6]:[-5.2,0,5.2];
+  const topY=()=>Math.tan(THREE.MathUtils.degToRad(20))*14;
+
+  for(let i=0;i<N;i++){
+    const g=new THREE.Group();g.scale.setScalar(mobile?.7:1.1);            // posición
+    const pivot=new THREE.Group();        // gira el cuerpo
+    // varilla + yugo
+    const rod=new THREE.Mesh(new THREE.CylinderGeometry(.05,.05,3,12),trim);rod.position.y=1.9;g.add(rod);
+    const yoke=new THREE.Mesh(new THREE.TorusGeometry(.62,.07,12,32,Math.PI),trim);yoke.rotation.z=Math.PI;yoke.position.y=.1;g.add(yoke);
+    // cuerpo
+    const body=new THREE.Mesh(new THREE.CylinderGeometry(.5,.38,1.15,32),metal);body.rotation.x=Math.PI/2;
+    const ring=new THREE.Mesh(new THREE.TorusGeometry(.5,.045,12,40),trim);ring.position.z=.58;
+    const glass=new THREE.Mesh(new THREE.CircleGeometry(.44,40),lens);glass.position.z=.585;
+    const back=new THREE.Mesh(new THREE.CylinderGeometry(.3,.3,.5,24),trim);back.rotation.x=Math.PI/2;back.position.z=-.78;
+    pivot.add(body,ring,glass,back);
+    // los cuerpos apuntan hacia +Z local; el haz sale por la lente
+    const L=22, R=3.4;
+    const cone=new THREE.Mesh(new THREE.ConeGeometry(R,L,48,1,true),beamMat());
+    cone.geometry.translate(0,-L/2,0);    // punta en el origen, abre hacia -Y
+    cone.rotation.x=-Math.PI/2;           // abre hacia +Z
+    cone.position.z=.6;
+    // el uv.y del cono va de 0 (base) a 1 (punta): invertir para que sea 1 en la lente
+    pivot.add(cone);
+    pivot.rotation.x=Math.PI/2.6;         // inclinado hacia el frente/abajo
+    g.add(pivot);
+    g.position.set(xs[i],topY()-.7,0);
+    scene.add(g);
+    fixtures.push({g,pivot,cone,base:xs[i],ph:i*1.7});
+  }
+
+  let W=0,H=0,mx=0,my=0,tx=0,ty=0,vis=0;
+  function size(){W=innerWidth;H=innerHeight;renderer.setSize(W,H,false);cam.aspect=W/H;cam.updateProjectionMatrix();
+    const t=Math.tan(THREE.MathUtils.degToRad(20))*14;fixtures.forEach(f=>f.g.position.y=t-.7);}
+  size();addEventListener("resize",size);
+  addEventListener("pointermove",e=>{tx=(e.clientX/W-.5)*2;ty=(e.clientY/H-.5)*2},{passive:true});
+
+  const sm=(a,b,x)=>{x=Math.min(1,Math.max(0,(x-a)/(b-a)));return x*x*(3-2*x)};
+  let t0=performance.now(),run=true;
+  document.addEventListener("visibilitychange",()=>{run=!document.hidden;if(run)loop()});
+  function loop(){
+    if(!run)return;
+    const t=(performance.now()-t0)/1000;
+    mx+=(tx-mx)*.05;my+=(ty-my)*.05;
+    const sy=scrollY, vh=H;
+    // aparece cuando el hero termina; se atenúa al llegar al contacto (se apaga la sala)
+    const doc=document.documentElement.scrollHeight-vh;
+    const on=sm(vh*.55,vh*1.05,sy)*(1-sm(doc-vh*1.1,doc-vh*.15,sy)*.55);
+    vis+=(on-vis)*.08;
+    canvas.style.opacity=Math.min(1,vis*1.4).toFixed(3);
+    fixtures.forEach((f,i)=>{
+      const sway=reduce?0:Math.sin(t*.5+f.ph)*.16;
+      const sweep=Math.sin(sy/520+f.ph)*.38;          // el scroll barre los haces
+      f.pivot.rotation.y=(i-(N-1)/2)*-.18+sweep+mx*.25;
+      f.pivot.rotation.x=Math.PI/2.55+sway*.5+my*.1;
+      f.g.position.x=f.base+(reduce?0:Math.sin(t*.3+f.ph)*.12);
+      f.cone.material.uniforms.uI.value=(.55+.45*Math.sin(t*.9+f.ph*2))*vis*(reduce?1:1);
+      // el uv.y de ConeGeometry: 1 en la punta → invertimos en el shader leyendo 1.-vH
+    });
+    if(vis>.01||on>.01)renderer.render(scene,cam);
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+</script>
+</body>
+</html>

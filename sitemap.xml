@@ -8,4 +8,10 @@
     <image:image><image:loc>https://luzdesala.mx/assets/hero-poster.jpg</image:loc></image:image>
     <image:image><image:loc>https://luzdesala.mx/assets/incorregibles-artistas.jpg</image:loc></image:image>
   </url>
+  <url>
+    <loc>https://luzdesala.mx/privacidad.html</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
+  </url>
 </urlset>
